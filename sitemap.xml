@@ -179,27 +179,6 @@
 
   
   <url>
-    <loc>https://anlt-9570.github.io/tags/GC/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/tags/JVM/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/tags/Thread/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://anlt-9570.github.io/tags/jQuery/</loc>
     <lastmod>2022-06-13</lastmod>
     <changefreq>daily</changefreq>
@@ -228,14 +207,14 @@
   </url>
   
   <url>
-    <loc>https://anlt-9570.github.io/tags/Nginx/</loc>
+    <loc>https://anlt-9570.github.io/tags/mysql/</loc>
     <lastmod>2022-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://anlt-9570.github.io/tags/mysql/</loc>
+    <loc>https://anlt-9570.github.io/tags/Nginx/</loc>
     <lastmod>2022-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -249,6 +228,27 @@
   </url>
   
   <url>
+    <loc>https://anlt-9570.github.io/tags/GC/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/tags/JVM/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/tags/Thread/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://anlt-9570.github.io/tags/MQ/</loc>
     <lastmod>2022-06-13</lastmod>
     <changefreq>daily</changefreq>
@@ -256,27 +256,6 @@
   </url>
   
 
-  
-  <url>
-    <loc>https://anlt-9570.github.io/categories/GC/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/categories/JVM/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/categories/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</loc>
-    <lastmod>2022-06-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/web%E5%89%8D%E7%AB%AF/</loc>
@@ -301,6 +280,27 @@
   
   <url>
     <loc>https://anlt-9570.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/categories/GC/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/categories/JVM/</loc>
+    <lastmod>2022-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/categories/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</loc>
     <lastmod>2022-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
