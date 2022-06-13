@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta property="og:type" content="article">
+<meta property="og:title" content="Mysql_介绍">
+<meta property="og:url" content="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/index.html">
+<meta property="og:site_name" content="ANLT-9570">
+<meta property="og:locale">
+<meta property="og:image" content="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/Users/一只小王八/AppData/Roaming/Typora/typora-user-images/image-20220207170910379.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/Users/一只小王八/AppData/Roaming/Typora/typora-user-images/image-20220207171341310.png">
+<meta property="article:published_time" content="2021-09-05T03:11:56.192Z">
+<meta property="article:modified_time" content="2022-04-28T03:08:51.147Z">
+<meta property="article:author" content="xc9570">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/Users/一只小王八/AppData/Roaming/Typora/typora-user-images/image-20220207170910379.png"><title>Mysql_介绍 | ANLT-9570</title><link ref="canonical" href="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">ANLT-9570</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql_介绍</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-09-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-04-28</span></span></div></header><div class="post-body"><p><b></b></p>
+<span id="more"></span>
+
+
+
+
+        <h4 id="MySQL支持的存储引擎">
+          <a href="#MySQL支持的存储引擎" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL支持的存储引擎" class="headerlink" title="MySQL支持的存储引擎"></a>MySQL支持的存储引擎</h4>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th>存储引擎</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ARCHIVE</td>
+<td>用于数据存档 〈记录插入后不能再修改〉</td>
+</tr>
+<tr>
+<td>BLACKHOLE</td>
+<td>丢弃写操作，读操作会返回空内容</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td>在存储数据时，以逗号分隔各个数据项</td>
+</tr>
+<tr>
+<td>FEDERATED</td>
+<td>用来访问远程表</td>
+</tr>
+<tr>
+<td>InnoDB</td>
+<td>支持事务、行级锁、外键</td>
+</tr>
+<tr>
+<td>MEMORY</td>
+<td>数据只存储在内存，不存储在磁盘:多用于临时</td>
+</tr>
+<tr>
+<td>MERGE</td>
+<td>用来管理多个 MyISAM 表构成的表集合</td>
+</tr>
+<tr>
+<td>MylSAM</td>
+<td>主要的非事务处理存储引擎</td>
+</tr>
+<tr>
+<td>NDB</td>
+<td>MySQL 专用存储引擎</td>
+</tr>
+</tbody></table></div>
+<!-- more -->
+
+
+        <h1 id="InnoDB简介">
+          <a href="#InnoDB简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#InnoDB简介" class="headerlink" title="InnoDB简介"></a>InnoDB简介</h1>
+      <p>InnoDB是将表中数据存储到磁盘上的存储引擎，即使关闭重启服务器，数据还是存在，数据的处理过程发生在内存中，所以需要把磁盘中的数据加载到内存。如果是处理写入或修改请求，还需要把内存中的内容刷新到磁盘上。而我们知道读写磁盘的速度非常慢，与读写内存差了 几个 数量级。InnoDB获取数据的方式是，将数据划分为若干个页，以页作为磁盘和内存之间交互的基本单位。InnoDB中页的大小一般为16KB。也就是在一般情况下，一次最少从磁盘中读取 16KB 的内容到内存中，一次最少把内存中的16KB 内容刷新到磁盘中。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可以通过innodb_page_size设置InnoDB存储引擎中页的大小,默认值为16384(单位字节,16KB),该变量在初始化MySQL数据目录时指定,之后就不能更改了(mysqld --initialize 来初始化目录)。</span><br></pre></td></tr></table></div></figure>
+
+<p>InnoDB目前支持4种行格式:<br>compact,redundant,dynamic,compressed</p>
+<p>InnoDB为了不同的目的设置了不同类型的页，用于存放记录的页成为数据页：</p>
+<p>一个数据页大致分为7个部分：</p>
+<p>1.File Header：表示页的一些通用信息（固定的38字节）</p>
+<p>2.Page Header：表示数据页一些专有的信息（固定56字节）</p>
+<p>3.Infimum+Supremum：两个虚拟的伪记录，分别表示页中的最小和最大记录（固定26字节）</p>
+<p>4.User Records：真正存储我们插入的记录，大小不固定</p>
+<p>5.Free Space：页中尚未使用的部分，大小不固定</p>
+<p>6.Page Directory：页中某些记录的相对位置，就是各个槽对应的记录在页面中额地址偏移量，大小不固定记录越多空间越大</p>
+<p>7.File Trailer：用于检验页是否完整（固定8字节）</p>
+<p>每个记录的头信息中都有一个next_record属性，从而可以使页中的所有记录串联成一个单项链表</p>
+<p>InnoDB会把页中的记录划分为若干个组，每个组的最后一个记录的地址偏移量作为一个槽，存放在 Page Directory中，一个槽占用2字节</p>
+<p>在一个页中根据主键查找记录会非常快的，分为两个步骤：</p>
+<p>1.通过2分查找确定记录所在分组对应的槽，并找到该槽所在分组中主键值最小的那条记录</p>
+<p>2.通过记录的next_record属性遍历该槽所在的组中各个记录</p>
+<p>每个数据页的File Header部分都有上一个页和下一个的编号，所以所有的数据页会组成一个双向链表。</p>
+<p>在将页从内存刷到磁盘时，为了保证页的完整性，页首和页尾都会存储页中数据的校验和，以及页面最后修改时对应的LSN值，如果页首和页尾的校验和以及LSN值校验不成功，说明刷新期间出了问题（磁盘数据和页中数据不一致）</p>
+
+        <h4 id="1-聚簇索引：">
+          <a href="#1-聚簇索引：" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-聚簇索引：" class="headerlink" title="1.聚簇索引："></a>1.聚簇索引：</h4>
+      <p>InnoDB存储引擎会自动为我们创建聚簇索引，在InnoDB中，聚簇索引就是数据的存储方式   - - &gt; &gt;”索引即数据，数据即索引”</p>
+<p>两个特点：</p>
+<p>使用主键值得大小进行记录和页的排序</p>
+<p>B+树的页子节点存储的是完整的用户记录</p>
+<p>聚簇索引只能在搜索条件是主键值时才能发挥作用，原因是B+树中的数据是按照主键进行排序</p>
+
+        <h4 id="2-二级索引-或辅助索引">
+          <a href="#2-二级索引-或辅助索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-二级索引-或辅助索引" class="headerlink" title="2.二级索引(或辅助索引)"></a>2.二级索引(或辅助索引)</h4>
+      <p>创建一颗新的B+树，不再是根据主键值得大小进行排序，而是根据你指定的列数据采用不同的规则进行排序</p>
+<p>二级索引的几个特点：</p>
+<p>使用指定列的大小进行记录和页的排序</p>
+<p>B+树的叶子节点存储不是完整的用户记录，而只是你指定的列加主键的值</p>
+<p>目录中不再是主键加页号的搭配，而是指定的列+主键</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在当前B+树通过携带主键信息到聚簇索引中重新定位完整的用户记录的过程称为回表</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="3-联合索引-复合或多列索引">
+          <a href="#3-联合索引-复合或多列索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-联合索引-复合或多列索引" class="headerlink" title="3.联合索引(复合或多列索引)"></a>3.联合索引(复合或多列索引)</h4>
+      <p>为多个列建立索引</p>
+<p>例，列1，列2，建立索引：</p>
+<p>可以让B+树找列1和列2的大小进行排序；</p>
+<p>1.先把各个记录和页按列1进行排序</p>
+<p>2.在记录列1相同的情况下，在采用列2进行排序。</p>
+<p>叶子节点的记录是由列1，列2和主键组成</p>
+
+        <h1 id="InnoDB中B-树索引的主要事项">
+          <a href="#InnoDB中B-树索引的主要事项" class="heading-link"><i class="fas fa-link"></i></a><a href="#InnoDB中B-树索引的主要事项" class="headerlink" title="InnoDB中B+树索引的主要事项"></a>InnoDB中B+树索引的主要事项</h1>
+      <p>每当为某个表创建一个B+树索引时，都会为这个索引创建一个根节点，最开始表中没有数据时，B+树索引对应的根节点没有用户记录也没有目录项记录</p>
+<p>随后向表中插入记录时，先把用户记录存到跟节点</p>
+<p>根节点可用空间用完时，会将记录复制到新分配的页，然后对这个页进行分裂操作</p>
+<p>InnoDB的索引分为两种：</p>
+<p>聚簇索引：以主键值的大小做为页和记录的排序规则，在叶子节点处存储的记录包含了表中所有的列。</p>
+<p>二级索引：以索引列的大小作为页和记录的排序规则，在叶子节点处存储的记录内容是索引列+主键。</p>
+<p>在二级索引的B+树内节点中，目录项记录由索引列的值，主键值和页号组成。</p>
+<p>一个数据页至少可以容纳两条数据</p>
+<p>MyISAM存储引擎的数据和索引分开，这种存储引擎全部都是二级索引，在叶子节点处存储的是列+行号。</p>
+<p>一个表空间默认16T的数据</p>
+<p>区的概念</p>
+<p>连续的64个页是一个区，256个连续的区是一组，一个区默认占用1M</p>
+<p>Buffer Pool</p>
+<p><img src="/2021/09/05/mysql/MySQL/Users\一只小王八\AppData\Roaming\Typora\typora-user-images\image-20220207170910379.png" alt="image-20220207170910379"></p>
+<p><img src="/2021/09/05/mysql/MySQL/Users\一只小王八\AppData\Roaming\Typora\typora-user-images\image-20220207171341310.png" alt="image-20220207171341310"></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://anlt-9570.github.io">xc9570</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://anlt-9570.github.io/2021/09/05/mysql/MySQL/">https://anlt-9570.github.io/2021/09/05/mysql/MySQL/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://anlt-9570.github.io/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/02/11/redis/Redis/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Redis_Study</span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="valine-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#MySQL%E6%94%AF%E6%8C%81%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">1.</span> <span class="toc-text">
+          MySQL支持的存储引擎</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InnoDB%E7%AE%80%E4%BB%8B"><span class="toc-number"></span> <span class="toc-text">
+          InnoDB简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">
+          1.聚簇索引：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95-%E6%88%96%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95"><span class="toc-number">2.</span> <span class="toc-text">
+          2.二级索引(或辅助索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95-%E5%A4%8D%E5%90%88%E6%88%96%E5%A4%9A%E5%88%97%E7%B4%A2%E5%BC%95"><span class="toc-number">3.</span> <span class="toc-text">
+          3.联合索引(复合或多列索引)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InnoDB%E4%B8%ADB-%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%B8%BB%E8%A6%81%E4%BA%8B%E9%A1%B9"><span class="toc-number"></span> <span class="toc-text">
+          InnoDB中B+树索引的主要事项</span></a></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/bg18.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Process....</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/ANLT-9570" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="mailto:xc9570@gmail.com" target="_blank" rel="noopener" data-popover="Gmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">G</span></a><a class="sidebar-ov-social-item" href="tencent://message?uin=1907402902" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="https://mail.qq.com/cgi-bin/frame_html" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">20</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">7</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">11</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021~2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>XC9570 All Rights Reserved.</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function loadValine () {
+  var GUEST_INFO = ['nick', 'mail', 'link'];
+  var guest_info = 'nick,mail,link';
+
+  guest_info = guest_info.split(',').filter(function(item) {
+    return GUEST_INFO.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#valine-container',
+    appId: 'WqGLfB4PktCd9e6f2qJ61Eq0-gzGzoHsz',
+    appKey: 'xXczeVQhAAiKf5JTiT0sOX0q',
+    notify: true,
+    verify: true,
+    placeholder: '说点什么吧...',
+    avatar: 'mp',
+    meta: guest_info,
+    pageSize: '10' || 10,
+    visitor: false,
+    recordIP: false,
+    lang: '' || 'zh-cn',
+    path: window.location.pathname
+  });
+}
+
+if (false) {
+  loadValine();
+} else {
+  window.addEventListener('DOMContentLoaded', loadValine, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>

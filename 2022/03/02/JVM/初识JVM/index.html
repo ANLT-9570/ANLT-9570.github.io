@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta property="og:type" content="article">
+<meta property="og:title" content="JVM介绍">
+<meta property="og:url" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/index.html">
+<meta property="og:site_name" content="ANLT-9570">
+<meta property="og:locale">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/20201124113636647.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/2.jpg">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/3.jpg">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/4.jpg">
+<meta property="article:published_time" content="2022-03-02T13:59:21.520Z">
+<meta property="article:modified_time" content="2022-06-13T08:45:17.152Z">
+<meta property="article:author" content="xc9570">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/20201124113636647.png"><title>JVM介绍 | ANLT-9570</title><link ref="canonical" href="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">ANLT-9570</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JVM介绍</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-03-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-06-13</span></span></div></header><div class="post-body"><p><b></b></p>
+<span id="more"></span>
+
+
+        <h1 id="虚拟机分类">
+          <a href="#虚拟机分类" class="heading-link"><i class="fas fa-link"></i></a><a href="#虚拟机分类" class="headerlink" title="虚拟机分类"></a>虚拟机分类</h1>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Classic VM//初代</span><br><span class="line">Exact VM//</span><br><span class="line">HotSpot 虚拟机</span><br><span class="line">J9</span><br><span class="line">Graal 虚拟机</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="类加载器子系统">
+          <a href="#类加载器子系统" class="heading-link"><i class="fas fa-link"></i></a><a href="#类加载器子系统" class="headerlink" title="类加载器子系统"></a>类加载器子系统</h1>
+      
+        <h2 id="类加载过程">
+          <a href="#类加载过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2>
+      <p>类加载过程分为三个阶段：加载，链接(Linking)，初始化</p>
+<p>1.加载：通过类的全限定名以二进制流的方式加载到内存中，生成该类的Class对象；把该类的静态存储结构转换为方法区的运行时数据结构。</p>
+<p>加载.class的方式:通过本地，或者网络等；</p>
+<p>2.链接(Linking)：链接又分为三个阶段：验证(Verify)，准备（Prepare），解析（Resolve）；</p>
+<p>验证：确保当前class文件的字节流包含的信息符合当前虚拟机的要求；主要包括四种验证：文件格式，元数据，字节码，符号引用验证；例如每个class文件的开头都是以CA FE BA BE标识开头；可通过     Binary Viewe查看；</p>
+<p>准备：为类变量(static修饰的变量，不包括被final修饰的static(编译期已分配))分配内存，设置该变量的默认初始值(0值)；(通过jclasslib工具查看)</p>
+<p>解析：将常量池的符号引用转换为直接引用（通过：javap -v xx.class进行反编译可以看到常量池已经加载的信息，然后看方法区的引用）解析主要针对：类或接口，字段，类方法等；</p>
+<p>3.初始化：执行类构造器方法clinit()（类变量(static)的赋值和执行静态代码块，如果类中没有静态代码块和类变量，不会生成clinit文件）多线程情况下也只会被执行一次</p>
+
+        <h2 id="类加载器">
+          <a href="#类加载器" class="heading-link"><i class="fas fa-link"></i></a><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2>
+      <p>Bootstrap ClassLoad ，Extension ClassLoad，System ClassCload</p>
+<p>JVM支持两种类加载器：引导类加载器(Bootstrap ClassLoader)，自定义类加载器(User-Define ClassLoader)(继承ClassLoader类的都属于自定义加载器)</p>
+<p>Bootstrap ClassLoader：</p>
+<ul>
+<li>属于虚拟机自带的加载器</li>
+<li>用于加载java的核心库(JAVA_HOME/jre/lib/rt.jar等)只加载包名为java，javax,sun等开头的类</li>
+<li>加载扩展类和应用程序类加载器，没有父加载器，不继承ClassCload</li>
+</ul>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取Bootstrap ClassLoad类加载器加载的目录</span></span><br><span class="line">URL[] urLs = Launcher.getBootstrapClassPath().getURLs();</span><br><span class="line"><span class="keyword">for</span> (URL urL : urLs) &#123;</span><br><span class="line">    System.out.println(urL.toExternalForm());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>Extension ClassLoad：</p>
+<ul>
+<li>ClassLoad类的子类</li>
+<li>从java.ext.dirs系统属性指定的目录加载类库，或从jdk的jre/lib/ext下加载类库；用户创建的类库放在此也会加载；</li>
+</ul>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Extension  ClassLoad类加载器加载的目录</span></span><br><span class="line">String property = System.getProperty(<span class="string">&quot;java.ext.dirs&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(String s:property.split(<span class="string">&quot;;&quot;</span>))&#123;</span><br><span class="line">    System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>AppClassLoader：</p>
+<ul>
+<li>ClassLoad类的子类</li>
+<li>负责加载环境变量classpath或者系统属性java.class.path指定路径下的类库</li>
+<li>该类是程序中默认的类加载器，一般java应用的类都是由它来完成加载</li>
+</ul>
+<blockquote>
+<p>用户实现自定义类加载器需要实现ClassLoader或者URLClassLoader加载器</p>
+</blockquote>
+
+        <h2 id="双亲委派机制">
+          <a href="#双亲委派机制" class="heading-link"><i class="fas fa-link"></i></a><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2>
+      <p>工作原理：如果类加载器收到了类加载的请求，它并不会自己先去加载，而是委托给父类加载器去加载；如果父加载器还存在父加载器继续递归向上委托，直到最顶层的类加载器；如果父加载器可以完成加载，就成功返回，倘若父加载器无法完成加载，则由子加载器完成；</p>
+<blockquote>
+<p>避免了类的重复加载，防止核心API被串改</p>
+</blockquote>
+
+        <h1 id="运行时数据区">
+          <a href="#运行时数据区" class="heading-link"><i class="fas fa-link"></i></a><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h1>
+      
+        <h2 id="Java虚拟机的运行时数据区分布">
+          <a href="#Java虚拟机的运行时数据区分布" class="heading-link"><i class="fas fa-link"></i></a><a href="#Java虚拟机的运行时数据区分布" class="headerlink" title="Java虚拟机的运行时数据区分布"></a>Java虚拟机的运行时数据区分布</h2>
+      <p><img src="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/20201124113636647.png" alt="0"></p>
+
+        <h3 id="程序计数器">
+          <a href="#程序计数器" class="heading-link"><i class="fas fa-link"></i></a><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3>
+      <p>程序计数器是线程私有的，用来记录当前线程执行到的指令行(存储指向下一条指令的地址，随着线程的生命周期而结束)。比如在多线程中，cpu会对已经就绪的线程进行随机调度，如果当前线程指令还没执行完，可能被其它线程抢到时间片，此时就需要程序计数器记录当前线程执行到的位置，当当前线程又抢到时间片后，又会从刚才记录的指令开始执行。并且程序计数器不会发生OOM(OutOfMemoryError内存溢出)</p>
+
+        <h3 id="Java虚拟机栈">
+          <a href="#Java虚拟机栈" class="heading-link"><i class="fas fa-link"></i></a><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h3>
+      <p>java虚拟机栈也是线程私有的，它的生命周期与线程相同。虚拟机栈描述的是java方法执行的线程内存模型：每个方法被执行的时候，java虚拟机都会同步创建一个栈帧(用于存储局部变量表、操作数栈、动态链接、方法返回地址等信息)，每一个方法被调用直至执行完毕的过程，对应着一个栈帧在虚拟机中从入栈到出栈的过程。</p>
+<p>局部变量表存放编译期可知的八种基本数据类型和对象引用类型。</p>
+<p>在栈中可能会发生的两种异常：StackOverflowError(栈溢出)，OutOfMemoryError(内存溢出)</p>
+<p>如果线程请求的深度或者递归的深度大于虚拟机的深度将会抛出StackOverflowError(栈溢出)</p>
+<p>虚拟机栈容量是可以动态的扩展，当栈扩展时无法申请到空间会抛出OOM异常，或者开太多的线程也会OOM</p>
+<p>HotSpot虚拟机栈容量是不可以动态扩展的，所以不会由于虚拟机无法扩展而导致OOM异常—只有线程申请到栈空间成功就不会有OOM，申请失败时还是会OOM。</p>
+<p>局部变量表：类似于一个一维数组，数组的每个元素叫slot(槽)，用于存储变量(基本数据类和引用类型)；32位类型的变量占1一个槽(引用类型属于32位)，64位占两个槽（使用的时候取起始位置）；</p>
+<blockquote>
+<p>非静态方法第一个槽默认是this，静态方法没有，所以静态方法不能用this</p>
+</blockquote>
+<p><img src="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/2.jpg" alt="2"></p>
+<p>操作数栈：在方法执行的过程中，根据字节码指令，写入或读取数据(入栈/出栈);主要用于保存计算过程的中间结果，同时作为计算过程中变量临时的存储空间；</p>
+<p><img src="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/3.jpg" alt="3"></p>
+<p>动态链接：将符号引用转换为直接引用；java源文件编译成字节码时，所有的变量和方法引用都作为符号引用保存在class文件的常量池里；一个方法调用了其它方法时，就是通过常量池中指向方法符号引用表示的；</p>
+<p><img src="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/4.jpg" alt="4"></p>
+
+        <h3 id="本地方法栈">
+          <a href="#本地方法栈" class="heading-link"><i class="fas fa-link"></i></a><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3>
+      <p>本地方法栈与虚拟机栈的作用非常相似，区别在于虚拟机栈为虚拟机执行java方法(也就是字节码)服务，而本地方法栈则是为虚拟机使用到的本地(Native)方法服务(调用其它语言的库)。</p>
+<p>HotSpot中是直接把本地方法栈和虚拟机栈合二为一的，与虚拟机栈一样，本地方法栈也会在栈深度溢出或者扩展失败时分别抛出StackOverflow和OOM。</p>
+
+        <h3 id="java堆">
+          <a href="#java堆" class="heading-link"><i class="fas fa-link"></i></a><a href="#java堆" class="headerlink" title="java堆"></a>java堆</h3>
+      <p>java堆是虚拟机所管理的内存中最大的一块，并且也是被所有线程共享的一块内存区域。在虚拟机启动时被创建，java堆主要是用来存放对象实例，数组，几乎所有的对象实例都在堆中分配内存。</p>
+<p>java堆可以被实现成固定的大小，也可以是扩展(可通过-Xmx和-Xms设定)。如果堆中没有内存完成实例分配，并且堆无法在扩展时，虚拟机将会抛出OOM</p>
+<p>所有线程共享java堆，在这里还可以划分线程私有的缓冲区(ThreadLocal,Allocation Buffer,TLAB)，线程私有的缓冲区分配在Eden区，只占Eden区1/100；</p>
+<p>堆空间基于分代收集理论细分为：</p>
+<p>新生代（分为：Eden区，Survivor 0区，Survivor 1区），老年代，永久代(java7以前)；</p>
+<p>新生代（分为：Eden区，Survivor 0区，Survivor 1区），老年代，元空间(java8及以后);</p>
+<p>新生代和老年代的占比是1:2，而新生代中Eden区和s0,s1占比是8:1:1;</p>
+<p>几乎所有的对象都是在Eden区new出来的；被销毁的对象大多都是在新生代；</p>
+<blockquote>
+<p>对象的分配过程：大多对象都会在Eden区new出来，当Eden区满了之后会触发 Minor GC/Young GC，存活的对象将会放到s0,s1其中的一个区，而空着的一个Survivor区则称为to区；当Survivor区满了之后不会直接触发GC，而是当Eden区满了之后触发Minor GC/Young GC会同时对Survivor进行GC处理，把from区存活的对象放到to区，from就会变成to，to变成from，如果from区满了之后，剩余存活的对象直接进入老年代；对象每存活一次，就会有一个计数器记录着这个对象存活了多少次，当超过15次之后，将进入到老年代或者是Survivor区相同年龄的所有对象大于Survivor空间的一半则进入老年代；老年代满后直接FGC</p>
+</blockquote>
+<p>设置堆空间大小的参数：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-Xms	用来设置堆空间(年轻代+老年代)的初始内存大小</span><br><span class="line">	-X jvm的运行参数</span><br><span class="line">	ms	memory start</span><br><span class="line">-Xmx	设置堆空间的最大内存大小</span><br><span class="line">-Xmn	设置新生代的空间大小</span><br><span class="line">//堆空间的默认大小</span><br><span class="line">初始内存大小：物理电脑内存大小的1/64</span><br><span class="line">最大内存大小：物理电脑内存大小的1/4</span><br><span class="line">    </span><br><span class="line">//获取jvm的堆初始内存总量</span><br><span class="line">long initMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;</span><br><span class="line">//获取jvm的最大内存总量</span><br><span class="line">long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;</span><br><span class="line">System.out.println(&quot;-Xms:&quot;+initMemory+&quot;M&quot;);</span><br><span class="line">System.out.println(&quot;-Xmx:&quot;+maxMemory+&quot;M&quot;);</span><br><span class="line"></span><br><span class="line">jstat -gc 进程id//查看jvm的使用情况 在黑窗口使用</span><br><span class="line">-XX:+PrintGCDetails //GC的详细处理信息</span><br><span class="line"></span><br><span class="line">//新生代和老年代的占比配置</span><br><span class="line">默认：-XX:NewRation=2,表示新生代占1，老年代占2，新生代占整个堆的1/3</span><br><span class="line">可以修改：-XX:NewRation=4,表示新生代占1，老年代占4，新生代占整个堆的1/5</span><br><span class="line">//配置新生代中Eden区和Survivor的占比</span><br><span class="line">-XX:SurvivorRation=8;</span><br></pre></td></tr></table></div></figure>
+
+<p>逃逸分析：逃逸分析的基本行为就是分析对象的动态作用域；</p>
+<p>当一个对象在方法中被定义后，对象只在方法内部使用，则认为没有逃逸分析；</p>
+<p>反之它被外部方法引用，则发生逃逸。例如作为调用参数传递到其它方法；</p>
+<p>没有发生逃逸的对象，则可以分配到栈上，随着方法的结束，栈空间的对象就被移除；</p>
+<p>代码优化：栈上分配，标量替换；</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">内存上的分配</span><br><span class="line">Person person = new Person();</span><br><span class="line">Person:方法区</span><br><span class="line">person:栈</span><br><span class="line">new Person():堆</span><br></pre></td></tr></table></div></figure>
+
+<p>java8开始，静态变量，字符串常量池移到堆中；</p>
+
+        <h3 id="方法区">
+          <a href="#方法区" class="heading-link"><i class="fas fa-link"></i></a><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3>
+      <p>java7之前加永久代（Perm）,java8之后叫元空间（meta space）</p>
+<p>方法区和堆一样也是被线程共享的内存区域，内存大小可固定或者扩展；用于存储被虚拟机加载的类型信息，运行时常量池(常量，静态变量)等。元空间不在虚拟机设置的内存中，而是使用本地内存；方法区也会OOM;</p>
+<p>方法区的初始大小默认21m,最大内存没有限制；</p>
+<p>方法区参数设置</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-XX:MetaspaceSize=100m //初始大小</span><br><span class="line">-XX:MaxMetaspaceSize=1000m //最大值</span><br></pre></td></tr></table></div></figure>
+
+<p>运行时常量池是方法区的一部分，存储编译期生成的各种字面量与符号引用</p>
+<p>JDK1.8取消了永久代，取代永久代的是元空间。元空间属于本地内存，存储内容不同，元空间存储类的元信息，静态变量和常量池并入堆中。常量池可以看做是一张表，虚拟机指令根据这张常量表找到要执行的类名，方法名参数等；</p>
+
+        <h3 id="直接内存-堆外内存">
+          <a href="#直接内存-堆外内存" class="heading-link"><i class="fas fa-link"></i></a><a href="#直接内存-堆外内存" class="headerlink" title="直接内存(堆外内存)"></a>直接内存(堆外内存)</h3>
+      <p>直接内存并不是虚拟机运行时数据区的一部分,也不属于虚拟机规范，但是因为被频繁的使用(NIO)，才划出这一块，而且也可能导致OOM.</p>
+<p>可以直接使用Native函数库直接分配堆外内存，然后通过在java堆里面的DirectByteBuffer对象作为这块内存的引用进行操作。</p>
+<p>为什么要设置直接内存呢：</p>
+<p>java本身无法对磁盘读写，想要进行磁盘读写必须调用操作系统的方法(Native),调用操作系统方法的时候，CPU会切换到内核态。内核态期间，CPU函数读取磁盘文件，同时在操作系统内存中开辟一块系统缓存，将读取的数据写入到系统缓存区，但是java不能直接读取系统缓存，所以java会在堆内存中开辟自己的缓存区，java再次从系统缓存将数据读取到java缓存区。由于产生了两块缓存区导致访问速度缓慢。</p>
+<p>调用ByteBuffer.allocateDirect()时，会分配一块直接内存，java和系统可以共享该区域，减少一次读写操作。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://anlt-9570.github.io">xc9570</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/">https://anlt-9570.github.io/2022/03/02/JVM/%E5%88%9D%E8%AF%86JVM/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://anlt-9570.github.io/tags/JVM/">JVM</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/03/04/JVM/JVM%E8%B0%83%E8%AF%95/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JVM参数调试了解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/03/01/JVM/JVM%E6%8C%87%E4%BB%A4/"><span class="paginator-prev__text">JVM工具</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="valine-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%86%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">
+          虚拟机分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">
+          类加载器子系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">
+          类加载过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">
+          类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">
+          双亲委派机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">3.</span> <span class="toc-text">
+          运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%88%86%E5%B8%83"><span class="toc-number">3.1.</span> <span class="toc-text">
+          Java虚拟机的运行时数据区分布</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">3.1.1.</span> <span class="toc-text">
+          程序计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-number">3.1.2.</span> <span class="toc-text">
+          Java虚拟机栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">3.1.3.</span> <span class="toc-text">
+          本地方法栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E5%A0%86"><span class="toc-number">3.1.4.</span> <span class="toc-text">
+          java堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-number">3.1.5.</span> <span class="toc-text">
+          方法区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98-%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98"><span class="toc-number">3.1.6.</span> <span class="toc-text">
+          直接内存(堆外内存)</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/bg18.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Process....</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/ANLT-9570" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="mailto:xc9570@gmail.com" target="_blank" rel="noopener" data-popover="Gmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">G</span></a><a class="sidebar-ov-social-item" href="tencent://message?uin=1907402902" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="https://mail.qq.com/cgi-bin/frame_html" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">20</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">7</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">11</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021~2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>XC9570 All Rights Reserved.</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function loadValine () {
+  var GUEST_INFO = ['nick', 'mail', 'link'];
+  var guest_info = 'nick,mail,link';
+
+  guest_info = guest_info.split(',').filter(function(item) {
+    return GUEST_INFO.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#valine-container',
+    appId: 'WqGLfB4PktCd9e6f2qJ61Eq0-gzGzoHsz',
+    appKey: 'xXczeVQhAAiKf5JTiT0sOX0q',
+    notify: true,
+    verify: true,
+    placeholder: '说点什么吧...',
+    avatar: 'mp',
+    meta: guest_info,
+    pageSize: '10' || 10,
+    visitor: false,
+    recordIP: false,
+    lang: '' || 'zh-cn',
+    path: window.location.pathname
+  });
+}
+
+if (false) {
+  loadValine();
+} else {
+  window.addEventListener('DOMContentLoaded', loadValine, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>

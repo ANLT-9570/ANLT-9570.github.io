@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta property="og:type" content="article">
+<meta property="og:title" content="docker+jenkins实现自动化部署">
+<meta property="og:url" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/index.html">
+<meta property="og:site_name" content="ANLT-9570">
+<meta property="og:locale">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0-1.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/hexo/blogs/source_posts/docker/dockerInstallJenkins/0-2.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0-3.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/hexo/blogs/source_posts/docker/dockerInstallJenkins/1.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/2.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/3.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/4.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/5.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/6.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/7.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/8.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/9.png">
+<meta property="og:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/10.png">
+<meta property="article:published_time" content="2022-04-07T04:50:52.109Z">
+<meta property="article:modified_time" content="2022-04-28T03:04:40.986Z">
+<meta property="article:author" content="xc9570">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0.png"><title>docker+jenkins实现自动化部署 | ANLT-9570</title><link ref="canonical" href="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">ANLT-9570</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">docker+jenkins实现自动化部署</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-04-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-04-28</span></span></div></header><div class="post-body"><p><b></b></p>
+<span id="more"></span>
+
+
+        <h2 id="docker安装Jenkins">
+          <a href="#docker安装Jenkins" class="heading-link"><i class="fas fa-link"></i></a><a href="#docker安装Jenkins" class="headerlink" title="docker安装Jenkins"></a>docker安装Jenkins</h2>
+      <p>先拉取jenkins</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull jenkins/jenkins</span><br><span class="line">docker tag 镜像id jenkins //修改镜像名称方便书写</span><br></pre></td></tr></table></div></figure>
+
+<p>创建jenkins的挂载目录并且授权不然容器没有权限会报错，方便后续配置</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /opt/jenkins //-p 多级目录创建</span><br><span class="line">chmod 777 jenkins //授权</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p>创建并运行容器</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6060:8080 -p 50000:50000 -u root --privileged=true -v /var/run/docker.sock:/var/run/docker.sock -v /opt/jenkins:/var/jenkins_home -v /usr/bin/docker:/usr/bin/docker jenkins</span><br><span class="line"></span><br><span class="line">-p 6060:8080 //jenkins默认的访问端口是8080对外设置为6060</span><br><span class="line">-p 50000:50000  //Jenkins 可以公开一个允许入站代理连接到它的 TCP 端口</span><br><span class="line">-v /opt/jenkins:/var/jenkins_home //设置挂载的目录,jenkins生成的文件也会映射到容器外部的磁盘</span><br><span class="line">-u root --privileged=true -v //以root账号运行，方便后面jenkins执行shell脚本权限不够报错</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock -v /opt/jenkins:/var/jenkins_home -v /usr/bin/docker:/usr/bin/docker //把docker也挂载到jenkins里面，执行shell脚本时需要用到docker指令，不然用不了</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs 容器id//查看启动的结果,没有报错信息就是启动成功或者:docker ps /容器是否在运行</span><br></pre></td></tr></table></div></figure>
+
+<p>启动成功后访问 <kbd><span class="exturl"><a class="exturl__link" target="_blank" rel="noopener" href="http://ip:6060/">http://ip:6060</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></kbd> 访问后会提示密码在 <kbd>/var/jenkins_home/secrets/initialAdminPassword</kbd> 文件里，先进入容器，然后查看密码</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 74d93f86e4ea /bin/bash //进入容器</span><br><span class="line">cat /var/jenkins_home/secrets/initialAdminPassword //查看密码</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0.png" alt="0"></p>
+<p>选择安装推荐的插件(这里可能需要等久一点或者会报连接jenkins报错，只要你的网络没问题,点击重试就行)，创建账号密码登录进去.</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0-1.png" alt="0-1"></p>
+<p>等待……….</p>
+<p><img src="/2022/04/07/docker/dockerInstallJenkins/hexo\blogs\source_posts\docker\dockerInstallJenkins\0-2.png" alt="0-2"></p>
+<p>插件安装完成创建用户</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/0-3.png" alt="0-3"></p>
+<p>选择左边侧边栏的 “系统管理” 在选择 “全局工具配置”</p>
+<p><img src="/2022/04/07/docker/dockerInstallJenkins/hexo\blogs\source_posts\docker\dockerInstallJenkins\1.png" alt="1"></p>
+<p>往下滑，找到 <b>JDK</b> 选择jdk安装</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/2.png" alt="2"></p>
+<p>自动安装那里，默认是打钩的我已经把它去掉。选择自己已经安装有的jdk，别名可以随意取，可以通过<kbd>echo $JAVA_HOME</kbd>查看jdk的路径然后复制到JAVA_HOME路径里</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/3.png" alt="3"></p>
+<p>往下滑找到maven选择自动安装，然后取个别名，选择maven的版本后点击保存。</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/4.png" alt="4"></p>
+<p>配置完<b>jdk</b>和<b>maven</b>在安装一个maven的插件，主要用于构建maven项目方便</p>
+<p>系统管理—&gt;插件管理</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/5.png" alt="5"></p>
+<p>选择可选插件搜索maven选择 Pipeline Maven Integration 安装，因为我这里已经安装了，所以没有,可以在已安装那里看到</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/6.png" alt="6"></p>
+<p>回到首页选择<b>新建任务</b>就会显示刚刚安装的maven插件，没安装是没有的，输入任务名称点击<b>构建一个maven项目</b>，点击确定</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/7.png" alt="7"></p>
+<p>点击<b>源码管理</b>选择<b>Git</b> ,<b>URL</b>那里输入<b>Github</b>或者<b>Gitee</b>仓库的地址，选择添加，会弹出一个框，要求输入<b>Github</b>或者<b>Gitee</b>的账号和密码，添加完后<b>Credentials</b>那里就可以选择刚刚添加的账号了</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/8.png" alt="8"></p>
+<p>点击build,Root POM下需要填写<kbd>项名称/pom.xml</kbd>,不然你仓库下有多个项目的话不知道使用哪个项目的pom文件或者任务名称和项目名称不一样也会找不到pom文件。Goals and options(目标和选择)主要用于打包时需要设置的参数，比如：设置jvm的堆栈的大小或者跳过maven测试等等…</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/9.png" alt="9"></p>
+<p>点击<b>Post Steps</b>选择<b>Add post</b>下拉框选择 <b>执行shell</b>(jenkins打包完后执行shell，启动项目)，显示一个输入框就可以在里面写shell脚本</p>
+<p><img src="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/10.png" alt="10"></p>
+<p>我的shell脚本</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">#任务和项目必须一致，需要修改 pname ,ou,in,jport</span><br><span class="line">#!/bin/bash</span><br><span class="line">#任务名称 任务名称必须和项目名称一样</span><br><span class="line">pname=&quot;demo&quot;</span><br><span class="line">##构建容器时指定对外和对内端口</span><br><span class="line">ou=1586</span><br><span class="line">in=1586</span><br><span class="line">#jenkins端口</span><br><span class="line">jport=6060</span><br><span class="line">#会根据任务创建存放jar包目录</span><br><span class="line">p=/project/java/$pname/$pname/target</span><br><span class="line">#jenkins自动生成jar包的目录</span><br><span class="line">p3=/var/jenkins_home/workspace/$pname/$pname/target/</span><br><span class="line">#先删除以前的jar</span><br><span class="line">rm -rf $p</span><br><span class="line"></span><br><span class="line">#获取容器的id</span><br><span class="line">id=`docker ps -a|grep $pname| awk &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line">#根据端口获取jenkins的容器id</span><br><span class="line">jid=`docker ps -a|grep $jport| awk &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line">#镜像Id</span><br><span class="line">ll=`docker images|grep $pname|awk &#x27;&#123;print $3&#125;&#x27;`</span><br><span class="line">#查找并切割获取jar包名称</span><br><span class="line">j=`find $p3 -name &#x27;*.jar&#x27; |cut -d&#x27;/&#x27; -f8`</span><br><span class="line">#判断容器是否在运行</span><br><span class="line">if [ $id ];then</span><br><span class="line"> echo $id</span><br><span class="line"> docker stop $id</span><br><span class="line"> docker rm $id</span><br><span class="line"> sleep 3</span><br><span class="line"> echo &quot;iiiiiiii&quot;</span><br><span class="line">fi</span><br><span class="line">#判断镜像是否存在</span><br><span class="line">if [ $ll ];then</span><br><span class="line"> docker rmi $ll</span><br><span class="line"> sleep 3</span><br><span class="line"> echo &quot;lllllll&quot;</span><br><span class="line"> echo $ll</span><br><span class="line">fi</span><br><span class="line">#创建文件</span><br><span class="line">mkdir -p $p</span><br><span class="line">#把jar复制到指定目录</span><br><span class="line">docker cp $jid:$p3/$j $p</span><br><span class="line">cd $p</span><br><span class="line">echo `pwd`</span><br><span class="line">#dockerfile创建写入</span><br><span class="line">echo &#x27;from java:8&#x27; &gt;&gt; dockerfile</span><br><span class="line">echo &#x27;add &#x27;$j&#x27; &#x27;$j&#x27;&#x27; &gt;&gt; dockerfile</span><br><span class="line">echo &#x27;entrypoint [&quot;java&quot;,&quot;-jar&quot;,&quot;&#x27;$j&#x27;&quot;]&#x27; &gt;&gt; dockerfile</span><br><span class="line">cat dockerfile</span><br><span class="line">ls</span><br><span class="line">#运行构建容器</span><br><span class="line">docker build -t $pname .</span><br><span class="line">sleep 3</span><br><span class="line">docker run -d -p $ou:$in $pname</span><br><span class="line">exit 0</span><br></pre></td></tr></table></div></figure>
+
+<p>以上jenkins和要发布的项目都是在同一太机器上运行的…</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://anlt-9570.github.io">xc9570</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/">https://anlt-9570.github.io/2022/04/07/docker/dockerInstallJenkins/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://anlt-9570.github.io/tags/docker/">docker</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/04/09/MQ/RabbitMQ/rabbitmq_install/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">docker单机、集群安装rabbitmq</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/03/22/mysql/Text/"><span class="paginator-prev__text">MySql_Test</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="valine-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">1.</span> <span class="toc-text">
+          docker安装Jenkins</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/bg18.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Process....</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/ANLT-9570" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="mailto:xc9570@gmail.com" target="_blank" rel="noopener" data-popover="Gmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">G</span></a><a class="sidebar-ov-social-item" href="tencent://message?uin=1907402902" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="https://mail.qq.com/cgi-bin/frame_html" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">20</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">7</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">11</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021~2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>XC9570 All Rights Reserved.</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function loadValine () {
+  var GUEST_INFO = ['nick', 'mail', 'link'];
+  var guest_info = 'nick,mail,link';
+
+  guest_info = guest_info.split(',').filter(function(item) {
+    return GUEST_INFO.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#valine-container',
+    appId: 'WqGLfB4PktCd9e6f2qJ61Eq0-gzGzoHsz',
+    appKey: 'xXczeVQhAAiKf5JTiT0sOX0q',
+    notify: true,
+    verify: true,
+    placeholder: '说点什么吧...',
+    avatar: 'mp',
+    meta: guest_info,
+    pageSize: '10' || 10,
+    visitor: false,
+    recordIP: false,
+    lang: '' || 'zh-cn',
+    path: window.location.pathname
+  });
+}
+
+if (false) {
+  loadValine();
+} else {
+  window.addEventListener('DOMContentLoaded', loadValine, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
