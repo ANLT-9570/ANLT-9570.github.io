@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta property="og:type" content="article">
+<meta property="og:title" content="JVM垃圾回收,GCRoot,OOPMap">
+<meta property="og:url" content="https://anlt-9570.github.io/2022/08/06/JVM/GCROOT-OOPMAP/index.html">
+<meta property="og:site_name" content="ANLT-9570">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-08-06T02:22:10.039Z">
+<meta property="article:modified_time" content="2022-08-06T12:43:11.608Z">
+<meta property="article:author" content="xc9570">
+<meta name="twitter:card" content="summary"><title>JVM垃圾回收,GCRoot,OOPMap | ANLT-9570</title><link ref="canonical" href="https://anlt-9570.github.io/2022/08/06/JVM/GCROOT-OOPMAP/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">ANLT-9570</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JVM垃圾回收,GCRoot,OOPMap</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2022-08-06</span></span></div></header><div class="post-body"><p><b></b></p>
+<span id="more"></span>
+
+
+        <h3 id="如何标记对象是否存活">
+          <a href="#如何标记对象是否存活" class="heading-link"><i class="fas fa-link"></i></a><a href="#如何标记对象是否存活" class="headerlink" title="如何标记对象是否存活"></a>如何标记对象是否存活</h3>
+      <p>判断对象是否存活就是判断对象是否被在次使用，常用的算法有应用计算和可达性分析</p>
+<p><b>1.引用计数算法</b></p>
+<p>引用计数就是为对象添加一个引用计数器，当有一个对象引用它时，那么该对象的引用计数加1，反之每一个引用失效时，该对象的计数就会减1，当对象的引用次数为0时，那么认为该对象不会被再次使用，通过这种方式能够快速的定位到这些可回收的对象，从而进行清理；</p>
+<p>不过引用计数无法解决对象的循环引用问题，比如A引用B,B引用A，除此之外它们没有被任何对象引用，可能这两个对象不可能再被访问，但是它们相互引用对方，导致计数不为0，引用计数无法定位到和回收它们，另一方面就是需要而外的空间去维护引用计数器；</p>
+<p><b>2.可达性分析</b></p>
+<p>可达性分析是通过一系列称为GCRoots的根对象为起始节点，从这些节点开始，根据引用关系向下搜索，如果某个对象到GCroot间没有任何引用链，则证明此对象不再用，可回收;</p>
+<p>那么那些对象可以称之为GCRoots对象呢？作为GCRoot对象需要满足一个条件，那就是它在很长一段时间内不会被GC回收；</p>
+<p>1.虚拟机栈中本地变量所引用的对象</p>
+<p>2.方法区中常量引用的对象和静态属性引用的对象</p>
+<p>3.本地方法中引用的对象</p>
+<p>当我们通过可达性分析法来定位到对象是否存活后，就需要通过某种策略把这些已经死的对象进行清理，这过程涉及到三种算法，分别为：标记清除，标记复制，标记整理；</p>
+
+        <h3 id="垃圾收集算法">
+          <a href="#垃圾收集算法" class="heading-link"><i class="fas fa-link"></i></a><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3>
+      <p>垃圾收集算法是基于分代收集理论上的(而分代收集是建立在两个分代假说上的);</p>
+<p>1.弱分代假说：绝大多数对象都是朝生夕灭的</p>
+<p>2.强分代假说：熬过越多次垃圾收集过程的对象就越难以消亡</p>
+<p><b>1.标记清除</b></p>
+<p>标记清除法是先标记内存里需要回收的对象，标记完成后，统一回收掉所有被标记的对象，也可以反过来，标记存活的对象，回收未被标记的对象；不过标记清除也有它的不足之处，那就是会造成不连续的内存空间，或者当大量对象需要回收而且比较分散，清除的过程就会比较耗时；</p>
+<p><b>2.标记复制</b></p>
+<p>标记复制是将可用的内存按容量划分为大小相等的两块，每次只使用其中一块。当这一块的内存用完了，就将还存活的对象复制到另一块，然后在把已使用的内存空间一次清理掉；如果内存大多数对象是存活的，将会产生大量的内存复制开销；可使用的内存只有原来的一半；</p>
+<p><b>3.标记整理</b></p>
+<p>标记整理分为两个阶段，标记阶段和整理阶段；标记阶段会先把存活的对象和可回收的对象标记出来；标记完在堆内存进行整理，这个阶段会把存活的对象往内存的一端移动，移动完成对象后在清除存活对象边界之外的对象。</p>
+<p>标记整理解决了标记复制法的空间浪费，又解决了标记清除的空间碎片问题；</p>
+
+        <h3 id="什么是OOPMap">
+          <a href="#什么是OOPMap" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是OOPMap" class="headerlink" title="什么是OOPMap"></a>什么是OOPMap</h3>
+      <p>当垃圾回收发生时，收集线程会遍历栈里的所有变量，看看哪些位置上存储了引用类型，就意味着这个引用所指向的对象在这一次不会被回收；</p>
+<p>栈上的本地变量表只有一部分数据是引用类型的，为了避免每次垃圾收集时都要扫描真个栈，所以采用了空间换时间的策略。</p>
+<p>HotSpot虚拟机采用了一种叫做OOPMap的数据结构用于记录栈中的对象引用，OOPMap记录了栈上本地变量到堆上对象的引用关系，这些引用关系对象不能进行回收，并且可以作为根节点进行可达性分析，查找出不能够回收的对象；</p>
+
+        <h3 id="什么是safePoint-安全点">
+          <a href="#什么是safePoint-安全点" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是safePoint-安全点" class="headerlink" title="什么是safePoint(安全点)"></a>什么是safePoint(安全点)</h3>
+      <p>在GCRoot枚举过程中，可能会导致对象的引用关系发生变化，那么保存的OOPMap就要随着变化，如果每一条指令的执行都要去修改OOPMap的话，又是一件成本很高的事。所以就引入了安全点(safePoint)概念，只有在Safe Point才会生成或更新对应的OOPMap;</p>
+<p>Safe Point可以理解成用户执行到特殊的位置，在这些位置上中断用户线程然后更新对应的OOPMap;</p>
+<p>Safe Region(安全区)：就是在程序的一段代码片段中引用的关系不会发生变化，也就是不用更新OOPMap,那么在这段代码区域内进行GC不会有问题；</p>
+
+        <h3 id="GCRoots是如何枚举的？">
+          <a href="#GCRoots是如何枚举的？" class="heading-link"><i class="fas fa-link"></i></a><a href="#GCRoots是如何枚举的？" class="headerlink" title="GCRoots是如何枚举的？"></a>GCRoots是如何枚举的？</h3>
+      <p>GCRoot在枚举时都必须暂停用户线程，因为整个枚举的过程必须保证在一致性的快照中进行；这里一致性是指整个枚举期间，系统看起来像被冻结在某个时间点上，不会出现GCRoot的对象引用关系还在不断变化的情况，否则枚举结果的准确性无法保证；</p>
+<p>GCRoot的枚举过程是：(效率慢的)：遍历栈里的所有变量，逐一进行类型判断，如果是引用类信息，则属于GCRoots;(高效的)：直接扫描栈里的OOPMap,通过OOPMap获取对象的引用</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://anlt-9570.github.io">xc9570</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://anlt-9570.github.io/2022/08/06/JVM/GCROOT-OOPMAP/">https://anlt-9570.github.io/2022/08/06/JVM/GCROOT-OOPMAP/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2022/07/28/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/"><span class="paginator-prev__text">Spring循环依赖问题</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="valine-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%A0%87%E8%AE%B0%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E5%AD%98%E6%B4%BB"><span class="toc-number">1.</span> <span class="toc-text">
+          如何标记对象是否存活</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">
+          垃圾收集算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFOOPMap"><span class="toc-number">3.</span> <span class="toc-text">
+          什么是OOPMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFsafePoint-%E5%AE%89%E5%85%A8%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">
+          什么是safePoint(安全点)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCRoots%E6%98%AF%E5%A6%82%E4%BD%95%E6%9E%9A%E4%B8%BE%E7%9A%84%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">
+          GCRoots是如何枚举的？</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/bg18.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">Process....</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/ANLT-9570" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="mailto:xc9570@gmail.com" target="_blank" rel="noopener" data-popover="Gmail" data-popover-pos="up"><span class="sidebar-ov-social-item__icon">G</span></a><a class="sidebar-ov-social-item" href="tencent://message?uin=1907402902" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-qq"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="https://mail.qq.com/cgi-bin/frame_html" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">11</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021~2022</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>XC9570 All Rights Reserved.</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function loadValine () {
+  var GUEST_INFO = ['nick', 'mail', 'link'];
+  var guest_info = 'nick,mail,link';
+
+  guest_info = guest_info.split(',').filter(function(item) {
+    return GUEST_INFO.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#valine-container',
+    appId: 'WqGLfB4PktCd9e6f2qJ61Eq0-gzGzoHsz',
+    appKey: 'xXczeVQhAAiKf5JTiT0sOX0q',
+    notify: true,
+    verify: true,
+    placeholder: '说点什么吧...',
+    avatar: 'mp',
+    meta: guest_info,
+    pageSize: '10' || 10,
+    visitor: false,
+    recordIP: false,
+    lang: '' || 'zh-cn',
+    path: window.location.pathname
+  });
+}
+
+if (false) {
+  loadValine();
+} else {
+  window.addEventListener('DOMContentLoaded', loadValine, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script></body></html>
