@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://anlt-9570.github.io/2022/02/11/redis/Redis_Study/</loc>
+    
+    <lastmod>2023-02-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/2023/02/24/redis/Redis/</loc>
+    
+    <lastmod>2023-02-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/2022/04/10/MQ/RabbitMQ/rabbitmq_study/</loc>
+    
+    <lastmod>2023-02-24</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://anlt-9570.github.io/2022/04/09/MQ/RabbitMQ/rabbitmq_install/</loc>
     
     <lastmod>2023-02-21</lastmod>
@@ -17,13 +38,6 @@
   
   <url>
     <loc>https://anlt-9570.github.io/2022/02/14/VMWare/VM/</loc>
-    
-    <lastmod>2023-02-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/2022/02/11/redis/Redis/</loc>
     
     <lastmod>2023-02-19</lastmod>
     
@@ -163,13 +177,6 @@
   </url>
   
   <url>
-    <loc>https://anlt-9570.github.io/2022/04/10/MQ/RabbitMQ/rabbitmq_study/</loc>
-    
-    <lastmod>2022-04-28</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://anlt-9570.github.io/2022/02/14/Text/</loc>
     
     <lastmod>2022-03-04</lastmod>
@@ -207,7 +214,7 @@
 
   <url>
     <loc>https://anlt-9570.github.io/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -215,28 +222,21 @@
   
   <url>
     <loc>https://anlt-9570.github.io/tags/JVM/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/tags/linux/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/tags/Nginx/</loc>
-    <lastmod>2023-02-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/tags/MQ/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -245,77 +245,84 @@
   
   <url>
     <loc>https://anlt-9570.github.io/categories/JVM/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/volatile/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/MySQL/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/docker/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/java8/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/linux/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/keepalived/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/redis/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/spring/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/Thread/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://anlt-9570.github.io/categories/java/</loc>
-    <lastmod>2023-02-21</lastmod>
+    <lastmod>2023-02-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/categories/MQ/</loc>
+    <lastmod>2023-02-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
