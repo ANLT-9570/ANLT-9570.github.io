@@ -6,7 +6,7 @@
   <link href="https://anlt-9570.github.io/atom.xml" rel="self"/>
   
   <link href="https://anlt-9570.github.io/"/>
-  <updated>2023-02-24T03:50:50.642Z</updated>
+  <updated>2023-05-07T14:54:34.658Z</updated>
   <id>https://anlt-9570.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MVCC</title>
+    <link href="https://anlt-9570.github.io/2023/05/07/MySQL/MYSQL/"/>
+    <id>https://anlt-9570.github.io/2023/05/07/MySQL/MYSQL/</id>
+    <published>2023-05-07T14:44:32.495Z</published>
+    <updated>2023-05-07T14:54:34.658Z</updated>
+    
+    <content type="html"><![CDATA[<p><b></b></p><span id="more"></span>        <h4 id="MySQL日志：">          <a href="#MySQL日志：" class="heading-link"><i class="fas fa-link"></i></a><a href="#MySQL日志：" class="headerlink" title="MySQL日志："></a>MySQL日志：</h4>      <p>​        <strong>redo log</strong>：记录InnoDB存储引擎中的事务操作（CUD）,也就是物理日志（用于宕机或崩溃回复）</p><p>​        <strong>undo log</strong>：记录数据修改操作的反向操作（用于事务回滚）</p><p>​        <strong>bin log</strong>：记录MySQL的所有数据库的操作，即逻辑日志；比如数据库结构和数据的增删改操作，例： CREATE、ALTER、DROP、                        INSERT、UPDATE 和 DELETE 等（用于数据备份，恢复，复制等）</p>        <h4 id="事务的特性：">          <a href="#事务的特性：" class="heading-link"><i class="fas fa-link"></i></a><a href="#事务的特性：" class="headerlink" title="事务的特性："></a>事务的特性：</h4>      <p>​        <strong>原子性</strong>：由undo log实现</p><p>​        <strong>持久性</strong>：由redo log实现</p><p>​        <strong>隔离性</strong>：加锁（当前读）或者MVCC（快照读）实现</p><p>​        <strong>一致性</strong>：由undo log ,redo log ,隔离性共同实现</p>        <h4 id="并发事务产生的一些问题：">          <a href="#并发事务产生的一些问题：" class="heading-link"><i class="fas fa-link"></i></a><a href="#并发事务产生的一些问题：" class="headerlink" title="并发事务产生的一些问题："></a>并发事务产生的一些问题：</h4>      <p>​        <strong>脏读</strong>：读到了其它事物未提交的数据，意味着可能这些数据会回滚；</p><p>​        <strong>不可重复读</strong>：在一个事务内，多次读取某个数据，却得到不同的结果；(读到了update后的数据)</p><p>​        <strong>幻读</strong>：在一个事务内，多次读取某个数据，却得到不同的结果；(insert,delete)</p><p>​        不可重复读和幻读都是读到了其它事物以提交的数据，但是它们针对的点不同；</p>        <h4 id="事务的隔离级别：">          <a href="#事务的隔离级别：" class="heading-link"><i class="fas fa-link"></i></a><a href="#事务的隔离级别：" class="headerlink" title="事务的隔离级别："></a>事务的隔离级别：</h4>      <p>​        <strong>读未提交</strong>：一个事务可以读取另一个未提交事务的数据。可能会导致脏读，幻读，或不可重复读；</p><p>​        <strong>读已提交</strong>：一个事务要等另一个事务提交后，才能读取数据。可能会导致幻读和不可重复度；</p><p>​        <strong>可重复度</strong>：开始读取数据(事务开启)时，不在允许修改操作。可能会导致幻读。(<strong>MySQL默认的隔离级别</strong>)</p><p>​        <strong>可串行化</strong>：最高隔离级别。可避免脏读，幻读，不可重复；</p><p>同一行数据发生读写请求时，写会上锁阻塞住。但MVCC用更好的方式处理读写请求，做到在发生读写请求冲突时不用加锁。这个读指的是快照读，而不是当前读，当前读是一种加锁操作(悲观锁)。</p><p>​        <strong>当前读</strong>：读取的数据库记录都是当前最小版本的，会对当前数据进行加锁，防止其它事物修改数据；是悲观锁的一种；</p><p>​                        select lock in share mode(共享锁)，select for update(排它锁)，update,insert,delete(排它锁)都是当前读</p><p>​        <strong>快照读</strong>：快照读是基于多版本并发控制实现，即是MVCC;它读到的数据不一定是当前最新的数据，有可能是之前历史版本的数据；</p><p>MVCC实现原理：</p><p>​        MVCC基于，3个隐试字段，undolog，版本链，readView实现的；MVCC是维持一个数据的多个版本，使读写操作没有冲突的一个抽象概念。</p><p>​        3个隐试字段：</p><p>​                        DB_TRX_ID：事务ID，记录这条记录最后一次被哪个事务ID修改</p><p>​                        DB_ROLL_PTR：回滚指针，指向这条记录的上一个版本；</p><p>​                        DB_ROW_ID：自增ID；如果数据表没有主键，InnoDB 会自动以DB_ROW_ID产生一个聚簇索引</p><p>​                        </p><p>​        undolog:记录数据修改操作的反向操作（用于事务回滚）</p><p>​        版本链：多个事务对数据修改产生的日志；比如有一条数据(name=aa,age=10),事务1要对其进行修改，数据库会对他先加排它锁，                        然后把该数据记录到undolog中，作为旧记录，即在undolog中有当前行的副本，记录完后，修改该行name=b,并且修改该                              行的隐藏字段事务id为1，默认从1开始，之后递增，回滚指针指向undolog的副本记录，表示我的上一个版本就是它…以此                        类推，隐藏字段事务id递增，2,3,4…..n;回滚指针则会指向它的上一个版本；以此形成版本链；</p><p>​                        </p><p>​        readView：readView记录了当前事务开始时间点之前，已提交的事务版本号和快照数据；在MVCC中，每个事物在执行读操作时，                                   都有自己的视图(readView)，用于确定当前事务可以看见哪些数据版本；</p><p>​                            readView中包含的信息：</p><p>​                                当前事务的事务ID(m_tx_id)：用于确定当前事务提交时是否需要参与冲突检测</p><p>​                                快照版本号(m_low_limit_id)：数据库系统生成readView分配的事务ID最大值+1</p><p>​                                活跃版本号(m_up_limit_id)：存储活跃事务列表中最小的ID</p><p>​                                已提交的事务列表（m_trx_ids）：正在活跃(活跃：指正在对数据进行操作，还没完成，事务没提交)的事务ID列表；</p><p>​                                m_ids：存储该行记录历史版本事务ID(记录该记录被哪些事务id修改过);</p><p>​                                creator_trx_id：创建该readView的事务ID，也就是当前事务的ID；</p><p>​        可见性判断：事务在对数据读取操作时，会从undolog实例版本链中，从最新版本开始往前对比，通过一系列的规则来判断该版本对当前事务是否可见，如果不可见则通过roll_pointer继续进行对比，直到找到可见版本或找不到任何一个可见版本为止。</p><p>​        可见性判断的规则：</p><p>​                如果DB_TRX_ID(该版本的事务ID) &lt; m_up_limit_id,说明该版本对于当前事务是可见的;(说明该版本已提交事务，不在事务列表)</p><p>​                如果DB_TRX_ID(该版本的事务ID) &gt;= m_low_limit_id,说明该版本对于当前事务是不可见的;(说明该版本的事务是之后生成的)</p><p>​                如果m_up_limit_id&lt;=DB_TRX_ID&lt;m_low_limit_id,说明该版本对于当前事务是不可见的;(说明该版本的事务在活跃事务列表中，                事务还没提交)</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="MySql" scheme="https://anlt-9570.github.io/categories/MySql/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Redis_Study</title>
@@ -369,23 +388,6 @@
     
     
     <category term="redis" scheme="https://anlt-9570.github.io/categories/redis/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>VM_待写</title>
-    <link href="https://anlt-9570.github.io/2022/02/14/VMWare/VM/"/>
-    <id>https://anlt-9570.github.io/2022/02/14/VMWare/VM/</id>
-    <published>2022-02-14T03:31:48.471Z</published>
-    <updated>2023-02-19T02:47:00.027Z</updated>
-    
-    <content type="html"><![CDATA[<p><b></b></p><span id="more"></span>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;</summary>
-    
-    
     
     
   </entry>
