@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://anlt-9570.github.io/2022/02/11/redis/Redis_Study/</loc>
+    
+    <lastmod>2023-07-11</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://anlt-9570.github.io/2023/02/12/java/multithread/Thread/</loc>
     
     <lastmod>2023-07-11</lastmod>
@@ -79,20 +86,6 @@
   </url>
   
   <url>
-    <loc>https://anlt-9570.github.io/2022/02/11/redis/Redis_Study/</loc>
-    
-    <lastmod>2023-02-24</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/2023/02/24/redis/Redis/</loc>
-    
-    <lastmod>2023-02-24</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://anlt-9570.github.io/2022/04/10/MQ/RabbitMQ/rabbitmq_study/</loc>
     
     <lastmod>2023-02-24</lastmod>
@@ -108,20 +101,6 @@
   
   <url>
     <loc>https://anlt-9570.github.io/2022/02/14/VMWare/VM/</loc>
-    
-    <lastmod>2023-02-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/2022/02/12/redis/Redis_2/</loc>
-    
-    <lastmod>2023-02-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://anlt-9570.github.io/2022/02/18/redis/redis_%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</loc>
     
     <lastmod>2023-02-19</lastmod>
     
@@ -244,13 +223,6 @@
   </url>
   
   <url>
-    <loc>https://anlt-9570.github.io/categories/linux/</loc>
-    <lastmod>2023-07-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://anlt-9570.github.io/categories/keepalived/</loc>
     <lastmod>2023-07-11</lastmod>
     <changefreq>daily</changefreq>
@@ -266,6 +238,13 @@
   
   <url>
     <loc>https://anlt-9570.github.io/categories/Nginx/</loc>
+    <lastmod>2023-07-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://anlt-9570.github.io/categories/linux/</loc>
     <lastmod>2023-07-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
